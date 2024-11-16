@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+    background-color:#151414;
+    color: #F5F5F5;
+    font-family: 'Poppins', sans-serif;
+}
+
+.register-card {
+    background-color: #3C3A3A !important;
+    padding: 2.5em;
+    border-radius: 1em;
+}
+
+.form-text {
+    color: #F7F1F1 !important;
+}
+
+.form-control:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-primary {
+    background-color: #FB5E5E !important;
+    color: #F5F5F5 !important;
+    border-color: #F7F1F1;
+    transition: all;
+    transition-duration:500ms;
+    font-weight: 800;
+    width: 50%;
+    font-size: 1em;
+}
+
+.btn.btn-primary:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-primary:hover {
+    background-color: #A32727 !important;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.btn.btn-outline-primary {
+    border-color: #FB5E5E;
+    color: #FB5E5E;
+    transition: all;
+    transition-duration:500ms;
+    font-weight: 800;
+    font-size: 1em;
+    width:50%;
+}
+
+.btn.btn-outline-primary:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-outline-primary:hover {
+    background-color: #FB5E5E !important;
+    color: #F5F5F5;
+    transition: all;
+    transition-duration:500ms;
+}
