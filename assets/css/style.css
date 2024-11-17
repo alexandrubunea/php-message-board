@@ -59,6 +59,8 @@ body {
     outline: none !important;
     border:1px solid #F7F1F1;
     box-shadow: 0 0 5px #F7F1F1;
+    background-color: #A32727 !important;
+    color: #F5F5F5;
 }
 
 .btn.btn-outline-primary:hover {
@@ -66,4 +68,19 @@ body {
     color: #F5F5F5;
     transition: all;
     transition-duration:500ms;
+}
+
+.alert.alert-danger {
+    background-color: #8C3041;
+    color: #F5F5F5;
+}
+
+.alert.alert-success {
+    background-color: #60AC34;
+    color: #F5F5F5;
+}
+
+.alert.alert-success i, .alert.alert-danger i {
+    font-size: 2em;
+    margin-right: 1em;
 }

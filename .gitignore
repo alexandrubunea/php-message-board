@@ -5,3 +5,5 @@
 /.idea/php-message-board.iml
 /.idea/vcs.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/dataSources.xml
+/.idea/sqldialects.xml

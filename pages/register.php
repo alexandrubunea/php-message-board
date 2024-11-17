@@ -1,3 +1,11 @@
+<?php
+$errorText = "";
+$accountCreated = false;
+
+require_once '../handlers/register-handler.php';
+handleRequest($errorText, $accountCreated);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +14,7 @@
     <title>The Message Board — Create account</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -19,15 +28,15 @@
             Your <b>DATA</b> will never be stored on our servers. Enjoy your <u>privacy</u>.
         </p>
 
-        <form>
+        <form class="mb-5" action="register.php" method="POST">
             <div class="mb-3">
                 <label for="username-input" class="form-label">Username:</label>
-                <input type="text" class="form-control" id="username-input" aria-describedby="username-help" required>
+                <input type="text" class="form-control" id="username-input" aria-describedby="username-help" name="username" required>
                 <div id="username-help" class="form-text">Choose something <b>unique</b>.</div>
             </div>
             <div class="mb-5">
                 <label for="password-input" class="form-label">Password:</label>
-                <input type="password" class="form-control" id="password-input" aria-describedby="password-help" required>
+                <input type="password" class="form-control" id="password-input" aria-describedby="password-help" name="password" required>
                 <div id="password-help" class="form-text">Choose something <b>strong</b>.</div>
             </div>
 
@@ -44,6 +53,24 @@
             </div>
 
         </form>
+
+        <?php if ($accountCreated) :?>
+            <div class="alert alert-success d-flex align-items-center" role="alert">
+                <i class="fa-solid fa-circle-check"></i>
+                <div>
+                    Account created, you can log in whenever you please.
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($errorText != "") : ?>
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div>
+                    <?php echo $errorText; ?>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
