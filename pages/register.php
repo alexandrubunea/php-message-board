@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+if(isset($_SESSION["username"])) {
+    header("Location: ../index.php");
+    exit();
+}
+
 $errorText = "";
 $accountCreated = false;
 
@@ -48,7 +55,7 @@ handleRequest($errorText, $accountCreated);
             <div class="row mt-3">
                 <div class="d-flex flex-column align-items-center">
                     <p class="small mb-2 fw-bold">Already have an account?</p>
-                    <button type="button" class="btn btn-outline-primary btn-lg p-3">LOGIN</button>
+                    <a href="login.php" class="btn btn-outline-primary btn-lg p-3">LOG IN</a>
                 </div>
             </div>
 
