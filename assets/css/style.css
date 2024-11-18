@@ -84,3 +84,9 @@ body {
     font-size: 2em;
     margin-right: 1em;
 }
+
+.nav-link.active {
+    border-bottom-color: #FB5E5E;
+    border-bottom-width: .2em;
+    border-bottom-style: solid;
+}
