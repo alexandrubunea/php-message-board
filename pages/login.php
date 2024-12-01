@@ -11,6 +11,8 @@ $accountCreated = false;
 
 require_once '../handlers/login-handler.php';
 handleRequest($errorText);
+
+$current_page = "login";
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +27,9 @@ handleRequest($errorText);
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+<?php include '../templates/header.php'; ?>
 <div class="d-flex justify-content-center p-5">
-    <div class="register-card">
+    <div class="auth-card">
         <h3 class="text-center">Connect to your account...</h3>
         <br>
 

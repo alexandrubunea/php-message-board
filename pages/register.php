@@ -11,6 +11,8 @@ $accountCreated = false;
 
 require_once '../handlers/register-handler.php';
 handleRequest($errorText, $accountCreated);
+
+$current_page = "register";
 ?>
 
 <!DOCTYPE html>
@@ -25,8 +27,9 @@ handleRequest($errorText, $accountCreated);
     <link href="../assets/css/style.css" rel="stylesheet">
 </head>
 <body>
+<?php include '../templates/header.php'; ?>
 <div class="d-flex justify-content-center p-5">
-    <div class="register-card">
+    <div class="auth-card">
         <h3 class="text-center">Create an account...</h3>
         <br>
 

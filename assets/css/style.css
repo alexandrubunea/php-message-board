@@ -6,10 +6,11 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
-.register-card {
+.auth-card{
     background-color: #3C3A3A !important;
     padding: 2.5em;
     border-radius: 1em;
+    width: 35rem;
 }
 
 .form-text {
@@ -89,4 +90,113 @@ body {
     border-bottom-color: #FB5E5E;
     border-bottom-width: .2em;
     border-bottom-style: solid;
+}
+
+.btn-create-message {
+    width: 15em !important;
+    padding: 1em;
+    font-size: 1.25em !important;
+}
+
+.message {
+    padding: 1em;
+    margin-top: 1em;
+    background-color: #2b2a2a;
+    border-radius: 1em;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.message:hover {
+    background-color: #3C3A3A;
+}
+
+.message .data {
+    font-size: .8em;
+}
+
+.message .short-text {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.btn-action-message {
+    width: 14em !important;
+    padding: 0.8em;
+    font-size: 1em !important;
+}
+
+.btn.btn-danger {
+    background-color: #FF375F !important;
+    color: #F5F5F5 !important;
+    border-color: #F7F1F1;
+    transition: all;
+    transition-duration:500ms;
+    font-weight: 800;
+    width: 50%;
+    font-size: 1em;
+}
+
+.btn.btn-danger:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-danger:hover {
+    background-color: #F7F1F1 !important;
+    color: #FF375F !important;
+    border:1px solid #FF375F;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.btn.btn-success {
+    background-color: #26BFBF !important;
+    color: #F5F5F5 !important;
+    border-color: #F7F1F1;
+    transition: all;
+    transition-duration:500ms;
+    font-weight: 800;
+    width: 50%;
+    font-size: 1em;
+}
+
+.btn.btn-success:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-success:hover {
+    background-color: #F7F1F1 !important;
+    color: #26BFBF !important;
+    border:1px solid #26BFBF;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.btn.btn-secondary {
+    background-color: #F23A29!important;
+    color: #F5F5F5 !important;
+    border-color: #F7F1F1;
+    transition: all;
+    transition-duration:500ms;
+    font-weight: 800;
+    width: 50%;
+    font-size: 1em;
+}
+
+.btn.btn-secondary:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn.btn-secondary:hover {
+    background-color: #F7F1F1 !important;
+    color: #F23A29 !important;
+    border:1px solid #F23A29;
+    transition: all;
+    transition-duration:500ms;
 }
