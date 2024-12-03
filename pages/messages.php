@@ -8,22 +8,22 @@ $current_page = "messages";
 include '../db.php';
 
 $sql_command = "
-SELECT
-    m.message_id,
-    m.title,
-    m.content,
-    u.username as author,
-    m.image_path,
-    m.created_at
-FROM
-    messages m
-JOIN
-    users u
-ON
-    m.author = u.user_id
-ORDER BY
-    m.created_at DESC
-LIMIT 20";
+        SELECT
+            m.message_id,
+            m.title,
+            m.content,
+            u.username as author,
+            m.image_path,
+            m.created_at
+        FROM
+            messages m
+        JOIN
+            users u
+        ON
+            m.author = u.user_id
+        ORDER BY
+            m.created_at DESC
+        LIMIT 20";
 
 $stmt = $conn->query($sql_command);
 ?>
@@ -61,22 +61,22 @@ $stmt = $conn->query($sql_command);
             $short_content = substr(strip_tags($row['content']), 0, 1000) . " [...]";
 
             echo <<<HTML
-            <div class="message">
-            <h3>{$row['title']}</h3>
-            <p class="data">
-                <i class="fa-solid fa-user"></i> Written by {$row['author']} <br>
-                <i class="fa-solid fa-clock"></i> {$formatted_date} <br>
-                <i class="fa-solid fa-heart"></i> 1252 Likes
-            </p>
-            <p class="short-text">{$short_content}</p>
-            <hr>
-            <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-                <a href="#" class="btn btn-success btn-action-message">
-                    <i class="fa-solid fa-glasses"></i> Continue reading
-                </a>
-                <a href="#" class="btn btn-danger btn-action-message">
-                    <i class="fa-solid fa-heart"></i> Like
-                </a>
+            <div class="message" id="message-{$row['message_id']}">
+                <h3>{$row['title']}</h3>
+                <p class="data">
+                    <i class="fa-solid fa-user"></i> Written by {$row['author']} <br>
+                    <i class="fa-solid fa-clock"></i> $formatted_date <br>
+                    <i class="fa-solid fa-heart"></i> 1252 Likes
+                </p>
+                <p class="short-text">$short_content</p>
+                <hr>
+                <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
+                    <a href="message.php/{$row['message_id']}" class="btn btn-success btn-action-message">
+                        <i class="fa-solid fa-glasses"></i> Continue reading
+                    </a>
+                    <a href="#" class="btn btn-danger btn-action-message">
+                        <i class="fa-solid fa-heart"></i> Like
+                    </a>
             HTML;
 
             if ($row['author'] == $_SESSION['username']) {
