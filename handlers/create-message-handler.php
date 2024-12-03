@@ -24,7 +24,7 @@ function handleRequest(&$errorText): void
     include '../db.php';
 
     $target_file = "(null)";
-    if(!empty($_FILES["image"])) {
+    if(!empty($_FILES["image"]["name"])) {
         $target_dir = "../uploads/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
         $image_file_type = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
