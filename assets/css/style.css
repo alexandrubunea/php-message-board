@@ -200,3 +200,9 @@ body {
     transition: all;
     transition-duration:500ms;
 }
+
+.create-message-form {
+    padding: 2em;
+    background-color: #2b2a2a;
+    border-radius: 2em;
+}

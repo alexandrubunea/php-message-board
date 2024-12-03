@@ -3,8 +3,8 @@
  * @var string $current_page
  */
 
-session_start();
-
+if(empty($_SESSION))
+    session_start();
 const VALID_PAGES = array(
     'homepage',
     'messages',

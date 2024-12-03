@@ -1,5 +1,6 @@
 <?php
-function handleRequest(&$errorText, &$accountCreated) {
+function handleRequest(&$errorText, &$accountCreated): void
+{
     /**
      * @var PDO $conn
      */

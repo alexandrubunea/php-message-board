@@ -1,6 +1,7 @@
 <?php
 
-function handleRequest(&$errorText) {
+function handleRequest(&$errorText): void
+{
     /**
      * @var PDO $conn
      */
@@ -37,11 +38,12 @@ function handleRequest(&$errorText) {
             }
 
             session_start();
+            $_SESSION['user_id'] = $result['user_id'];
             $_SESSION['username'] = $username;
             header("Location: ../index.php");
             exit();
 
-        } catch(PDOException $e) {
+        } catch(PDOException) {
             $errorText = "Something went wrong, try again later!";
         }
     }
