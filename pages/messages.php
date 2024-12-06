@@ -60,8 +60,8 @@ $stmt = $conn->query($sql_command);
             <div class="message" id="message-<?php echo $row['message_id']; ?>'">
                 <h3><?php echo $row['title']; ?></h3>
                 <p class="data">
-                    <i class="fa-solid fa-user"></i> Written by <?php echo $row['author']; ?> <br>
-                    <i class="fa-solid fa-clock"></i> $formatted_date <br>
+                    <i class="fa-solid fa-user"></i> Wrote by <?php echo $row['author']; ?> <br>
+                    <i class="fa-solid fa-clock"></i> <?php echo $formatted_date; ?>  <br>
                     <i class="fa-solid fa-heart"></i> 1252 Likes
                 </p>
                 <p class="short-text"><?php echo $short_content ?></p>

@@ -32,8 +32,8 @@ $message_data = viewMessage($_GET['id'], $errorText);
     <div class="message-content mt-5">
         <h1><?php echo $message_data['title']; ?></h1>
         <p>
-            <i class="fa-solid fa-user"></i> Wrote by: <?php echo $message_data['author']; ?> <br>
-            <i class="fa-solid fa-clock"></i> Date: <?php echo $message_data['created_at']; ?> <br>
+            <i class="fa-solid fa-user"></i> Wrote by <?php echo $message_data['author']; ?> <br>
+            <i class="fa-solid fa-clock"></i> <?php echo $message_data['created_at']; ?> <br>
             <i class="fa-solid fa-heart"></i> 1252 Likes
         </p>
         <hr>
