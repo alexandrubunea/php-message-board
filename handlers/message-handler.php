@@ -1,6 +1,6 @@
 <?php
 
-function handleRequest(&$errorText): void
+function createMessage(&$errorText): void
 {
     /**
      * @var PDO $conn
@@ -23,7 +23,7 @@ function handleRequest(&$errorText): void
 
     include '../db.php';
 
-    $target_file = "(null)";
+    $dest = "(null)";
     if(!empty($_FILES["image"]["name"])) {
         $target_dir = "../uploads/";
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
@@ -55,7 +55,7 @@ function handleRequest(&$errorText): void
         $stmt->execute([
             ':title' => $_POST['title'],
             ':content' => $_POST['content'],
-            ':image_path' => $target_file,
+            ':image_path' => $dest,
             ':author_id' => $_SESSION['user_id']
         ]);
 
@@ -63,4 +63,62 @@ function handleRequest(&$errorText): void
     } catch(PDOException) {
         $errorText = "Something went wrong, try again later!";
     }
+}
+
+function viewMessage($id, &$errorText): array
+{
+    /**
+     * @var PDO $conn
+     */
+    include '../db.php';
+
+    $result_arr = [];
+
+    $sql_command = "
+        SELECT
+            m.title,
+            m.content,
+            u.username as author,
+            m.image_path,
+            m.created_at
+        FROM
+            messages m
+        JOIN
+            users u
+        ON
+            m.author = u.user_id
+        WHERE m.message_id = :id";
+    $stmt = $conn->prepare($sql_command);
+
+    try {
+        $stmt->execute([
+           ':id' => $id
+        ]);
+
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if(!$res) {
+            $errorText = "There is no message with id: " . $id;
+            return $result_arr;
+        }
+
+        $result_arr['title'] = $res['title'];
+        $result_arr['content'] = $res['content'];
+        $result_arr['image_path'] = $res['image_path'];
+        $result_arr['author'] = $res['author'];
+
+        $formatted_date = "";
+        try {
+            $formatted_date = (new DateTime($res['created_at']))->format('d F Y H:i');
+        } catch (DateMalformedStringException) {
+            echo "Something went wrong.";
+        }
+        $result_arr['created_at'] = $formatted_date;
+
+    } catch (PDOException) {
+        $errorText = "Something went wrong, try again later!";
+        return $result_arr;
+    }
+
+    return $result_arr;
 }

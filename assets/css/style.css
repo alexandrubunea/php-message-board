@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 body {
     background-color:#151414;
@@ -21,6 +22,10 @@ body {
     outline: none !important;
     border:1px solid #F7F1F1;
     box-shadow: 0 0 5px #F7F1F1;
+}
+
+.btn {
+    font-family: "Source Code Pro", monospace !important;
 }
 
 .btn.btn-primary {
@@ -86,10 +91,15 @@ body {
     margin-right: 1em;
 }
 
+.nav-link {
+    font-family: "Source Code Pro", monospace !important;
+}
+
 .nav-link.active {
     border-bottom-color: #FB5E5E;
     border-bottom-width: .2em;
     border-bottom-style: solid;
+    font-weight: 600;
 }
 
 .btn-create-message {
@@ -109,10 +119,6 @@ body {
 
 .message:hover {
     background-color: #3C3A3A;
-}
-
-.message .data {
-    font-size: .8em;
 }
 
 .message .short-text {
@@ -205,4 +211,15 @@ body {
     padding: 2em;
     background-color: #2b2a2a;
     border-radius: 2em;
+}
+
+.message-content, .message-comments {
+    background-color: #2b2a2a;
+    padding: 2em;
+    border-radius: 1em;
+}
+
+.message-content p:first-of-type, .message .data {
+    font-size: .7em;
+    font-family: "Source Code Pro", monospace;
 }

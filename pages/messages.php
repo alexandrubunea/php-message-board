@@ -71,7 +71,7 @@ $stmt = $conn->query($sql_command);
                 <p class="short-text">$short_content</p>
                 <hr>
                 <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-                    <a href="message.php/{$row['message_id']}" class="btn btn-success btn-action-message">
+                    <a href="message.php?id={$row['message_id']}" class="btn btn-success btn-action-message">
                         <i class="fa-solid fa-glasses"></i> Continue reading
                     </a>
                     <a href="#" class="btn btn-danger btn-action-message">

@@ -6,10 +6,10 @@ if(empty($_SESSION['username'])) {
 
 $current_page = "messages";
 
-require_once '../handlers/create-message-handler.php';
+require_once '../handlers/message-handler.php';
 
 $errorText = '';
-handleRequest($errorText);
+createMessage($errorText);
 
 ?>
 <!doctype html>
