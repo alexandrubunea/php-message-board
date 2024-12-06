@@ -45,52 +45,43 @@ $stmt = $conn->query($sql_command);
     <a href="create-message.php" class="btn btn-primary btn-create-message
         <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>"><i class="fa-solid fa-square-plus"></i> Create message</a>
     <hr>
-
-    <?php
-    if ($stmt->rowCount() > 0) {
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($rows as $row) {
-            $formatted_date = "";
-            try {
-                $formatted_date = (new DateTime($row['created_at']))->format('d F Y H:i');
-            } catch (DateMalformedStringException) {
-                echo "Something went wrong.";
-            }
-
-            $short_content = substr(strip_tags($row['content']), 0, 1000) . " [...]";
-
-            echo <<<HTML
-            <div class="message" id="message-{$row['message_id']}">
-                <h3>{$row['title']}</h3>
+    <?php if($stmt->rowCount() > 0): ?>
+        <?php $rows = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
+        <?php foreach($rows as $row): ?>
+            <?php
+                $formatted_date = "";
+                try {
+                    $formatted_date = (new DateTime($row['created_at']))->format('d F Y H:i');
+                } catch (DateMalformedStringException) {
+                    echo "Something went wrong.";
+                }
+                $short_content = substr(strip_tags($row['content']), 0, 1000) . " [...]";
+            ?>
+            <div class="message" id="message-<?php echo $row['message_id']; ?>'">
+                <h3><?php echo $row['title']; ?></h3>
                 <p class="data">
-                    <i class="fa-solid fa-user"></i> Written by {$row['author']} <br>
+                    <i class="fa-solid fa-user"></i> Written by <?php echo $row['author']; ?> <br>
                     <i class="fa-solid fa-clock"></i> $formatted_date <br>
                     <i class="fa-solid fa-heart"></i> 1252 Likes
                 </p>
-                <p class="short-text">$short_content</p>
+                <p class="short-text"><?php echo $short_content ?></p>
                 <hr>
                 <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-                    <a href="message.php?id={$row['message_id']}" class="btn btn-success btn-action-message">
+                    <a href="message.php?id=<?php echo $row['message_id']; ?>" class="btn btn-success btn-action-message">
                         <i class="fa-solid fa-glasses"></i> Continue reading
                     </a>
-                    <a href="#" class="btn btn-danger btn-action-message">
+                    <a href="#" class="btn btn-danger btn-action-message <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>">
                         <i class="fa-solid fa-heart"></i> Like
                     </a>
-            HTML;
-
-            if ($row['author'] == $_SESSION['username']) {
-                echo <<<HTML
-                    <a href="#" class="btn btn-secondary btn-action-message">
-                        <i class="fa-solid fa-trash-can"></i> Delete
-                    </a>
-                HTML;
-            }
-
-            echo "</div></div>";
-        }
-    }
-    ?>
+                    <?php if($row['author'] == $_SESSION['username']): ?>
+                        <a href="#" class="btn btn-secondary btn-action-message">
+                            <i class="fa-solid fa-trash-can"></i> Delete
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
