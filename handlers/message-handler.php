@@ -9,6 +9,9 @@ function createMessage(&$errorText): void
     if($_SERVER['REQUEST_METHOD'] != 'POST')
         return;
 
+    if(empty($_SESSION))
+        return;
+
     if(empty($_SESSION['username']))
         return;
 

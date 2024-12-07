@@ -5,7 +5,15 @@ $current_page = "messages";
 require_once '../handlers/message-handler.php';
 
 $errorText = '';
+$errorTextComment = '';
+$errorTextViewComments = '';
+
 $message_data = viewMessage($_GET['id'], $errorText);
+
+require '../handlers/comment-handler.php';
+createComment($errorTextComment);
+$comments = viewComments($errorTextViewComments);
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -57,8 +65,58 @@ $message_data = viewMessage($_GET['id'], $errorText);
         </div>
     </div>
     <div class="message-comments my-3">
-        <h1>Comments</h1>
-        <!-- Will be implemented -->
+        <h1><i class="fa-solid fa-comment"></i> Comments</h1>
+        <hr class="my-3">
+        <div class="mt-5 mb-3">
+            <?php if(!empty($errorTextComment)): ?>
+                <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <?php echo $errorTextComment; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+        <form action="message.php?id=<?php echo $_GET['id']; ?>" method="POST">
+            <label for="comment-text-area" class="small mb-3">
+                <?php echo (empty($_SESSION))? "You must to be authenticated to comment." : "Add comment as " . $_SESSION['username'] . ':'; ?>
+            </label>
+            <textarea class="form-control" name="comment-text-area" id="comment-text-area" placeholder="Type your thoughts..." required <?php echo (empty($_SESSION))? 'disabled' : ''; ?>></textarea>
+            <button type="submit" class="btn btn-secondary btn-action-message my-3"><i class="fa-solid fa-arrow-right"></i> Add Comment</button>
+        </form>
+        <div class="my-5">
+            <?php if(sizeof($comments) == 0): ?>
+                <div class="alert alert-info d-flex align-items-center mt-5" role="alert">
+                    <i class="fa-solid fa-star"></i>
+                    Nobody commented on this message. Be the first to do it!
+                </div>
+            <?php else: ?>
+                <?php if(!empty($errorTextViewComments)): ?>
+                    <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <div>
+                            <?php echo $errorText; ?>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <?php foreach($comments as $comment): ?>
+                        <div class="px-2 py-2 my-3 comment d-flex flex-row rounded">
+                            <div class="d-flex flex-column px-4 my-auto cassette">
+                                <i class="fa-solid fa-circle-user mx-auto user-icon"></i>
+                                <p class="mx-auto username mt-2"><?php echo $comment['author']; ?></p>
+                            </div>
+                            <div class="d-flex flex-column w-100 px-4 pt-2 pb-0">
+                                <p class="comment-text"><?php echo $comment['content']; ?></p>
+                                <p class="small text-end timestamp">
+                                    <i class="fa-solid fa-clock"></i> <?php echo $comment['date']; ?>
+                                </p>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+
+            <?php endif; ?>
+        </div>
     </div>
     <?php endif; ?>
 </div>

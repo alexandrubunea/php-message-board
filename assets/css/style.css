@@ -86,7 +86,12 @@ body {
     color: #F5F5F5;
 }
 
-.alert.alert-success i, .alert.alert-danger i {
+.alert.alert-info {
+    background-color: #26BFBF;
+    color: #F5F5F5;
+}
+
+.alert.alert-success i, .alert.alert-danger i, .alert.alert-info i {
     font-size: 2em;
     margin-right: 1em;
 }
@@ -219,7 +224,23 @@ body {
     border-radius: 1em;
 }
 
-.message-content p:first-of-type, .message .data {
+.comment {
+    background-color: #3C3A3A;
+}
+
+.comment .user-icon {
+    font-size: 2em;
+}
+
+.comment .comment-text {
+    font-size: 0.9em;
+}
+
+.comment .cassette {
+    border-right: solid 1px #F7F1F1;
+}
+
+.message-content p:first-of-type, .message .data, .comment .timestamp {
     font-size: .7em;
     font-family: "Source Code Pro", monospace;
 }
