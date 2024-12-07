@@ -1,6 +1,7 @@
 <?php
 
-function createComment(&$errorText): void {
+function createComment(&$errorText): void
+{
     /**
      * @var PDO $conn
      */
@@ -31,13 +32,14 @@ function createComment(&$errorText): void {
             'content' => $_POST['comment-text-area']
         ]);
 
-        header('Location: ../pages/message.php?id=' . $_GET['id']);
+        header('Location: ../pages/message.php?id=' . $_GET['id'] . '#comments');
     } catch(PDOException) {
         $errorText = 'Something went wrong while trying to create comment.';
     }
 }
 
-function viewComments(&$errorText): array {
+function viewComments(&$errorText): array
+{
     /**
      * @var PDO $conn
      */

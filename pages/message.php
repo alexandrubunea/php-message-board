@@ -65,7 +65,7 @@ $comments = viewComments($errorTextViewComments);
         </div>
     </div>
     <div class="message-comments my-3">
-        <h1><i class="fa-solid fa-comment"></i> Comments</h1>
+        <h1 id="comments"><i class="fa-solid fa-comment"></i> Comments</h1>
         <hr class="my-3">
         <div class="mt-5 mb-3">
             <?php if(!empty($errorTextComment)): ?>

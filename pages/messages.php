@@ -2,30 +2,11 @@
 session_start();
 $current_page = "messages";
 
-/**
- * @var PDO $conn
- */
-include '../db.php';
+$errorText = "";
 
-$sql_command = "
-        SELECT
-            m.message_id,
-            m.title,
-            m.content,
-            u.username as author,
-            m.image_path,
-            m.created_at
-        FROM
-            messages m
-        JOIN
-            users u
-        ON
-            m.author = u.user_id
-        ORDER BY
-            m.created_at DESC
-        LIMIT 20";
+require_once '../handlers/message-handler.php';
+$messages = viewMessages($errorText);
 
-$stmt = $conn->query($sql_command);
 ?>
 
 <!doctype html>
@@ -45,42 +26,46 @@ $stmt = $conn->query($sql_command);
     <a href="create-message.php" class="btn btn-primary btn-create-message
         <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>"><i class="fa-solid fa-square-plus"></i> Create message</a>
     <hr>
-    <?php if($stmt->rowCount() > 0): ?>
-        <?php $rows = $stmt->fetchAll(PDO::FETCH_ASSOC); ?>
-        <?php foreach($rows as $row): ?>
-            <?php
-                $formatted_date = "";
-                try {
-                    $formatted_date = (new DateTime($row['created_at']))->format('d F Y H:i');
-                } catch (DateMalformedStringException) {
-                    echo "Something went wrong.";
-                }
-                $short_content = substr(strip_tags($row['content']), 0, 1000) . " [...]";
-            ?>
-            <div class="message" id="message-<?php echo $row['message_id']; ?>'">
-                <h3><?php echo $row['title']; ?></h3>
-                <p class="data">
-                    <i class="fa-solid fa-user"></i> Wrote by <?php echo $row['author']; ?> <br>
-                    <i class="fa-solid fa-clock"></i> <?php echo $formatted_date; ?>  <br>
-                    <i class="fa-solid fa-heart"></i> 1252 Likes
-                </p>
-                <p class="short-text"><?php echo $short_content ?></p>
-                <hr>
-                <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-                    <a href="message.php?id=<?php echo $row['message_id']; ?>" class="btn btn-success btn-action-message">
-                        <i class="fa-solid fa-glasses"></i> Continue reading
-                    </a>
-                    <a href="#" class="btn btn-danger btn-action-message <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>">
-                        <i class="fa-solid fa-heart"></i> Like
-                    </a>
-                    <?php if($row['author'] == $_SESSION['username']): ?>
-                        <a href="#" class="btn btn-secondary btn-action-message">
-                            <i class="fa-solid fa-trash-can"></i> Delete
-                        </a>
-                    <?php endif; ?>
-                </div>
+    <?php if(!empty($errorText)): ?>
+        <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>
+                <?php echo $errorText; ?>
             </div>
-        <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <?php if(sizeof($messages) == 0): ?>
+            <div class="alert alert-info d-flex align-items-center mt-5" role="alert">
+                <i class="fa-solid fa-star"></i>
+                There is no message yet. Be the first to write one!
+            </div>
+        <?php else: ?>
+            <?php foreach($messages as $message): ?>
+                <div class="message" id="message-<?php echo $message['message_id']; ?>'">
+                    <h3><?php echo $message['title']; ?></h3>
+                    <p class="data">
+                        <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
+                        <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
+                        <i class="fa-solid fa-heart"></i> 1252 Likes
+                    </p>
+                    <p class="short-text"><?php echo $message['content']; ?></p>
+                    <hr>
+                    <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
+                        <a href="message.php?id=<?php echo $message['message_id']; ?>" class="btn btn-success btn-action-message">
+                            <i class="fa-solid fa-glasses"></i> Continue reading
+                        </a>
+                        <a href="#" class="btn btn-danger btn-action-message <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>">
+                            <i class="fa-solid fa-heart"></i> Like
+                        </a>
+                        <?php if($message['author'] == $_SESSION['username']): ?>
+                            <a href="#" class="btn btn-secondary btn-action-message">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 

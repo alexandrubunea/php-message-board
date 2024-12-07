@@ -68,6 +68,67 @@ function createMessage(&$errorText): void
     }
 }
 
+function viewMessages(&$errorText): array
+{
+    /**
+     * @var PDO $conn
+     */
+    include '../db.php';
+
+    $sql_command = "
+        SELECT
+            m.message_id,
+            m.title,
+            m.content,
+            u.username as author,
+            m.image_path,
+            m.created_at
+        FROM
+            messages m
+        JOIN
+            users u
+        ON
+            m.author = u.user_id
+        ORDER BY
+            m.created_at DESC
+        LIMIT 20";
+    $result_arr = [];
+
+
+    try {
+        $stmt = $conn->query($sql_command);
+
+        if($stmt->rowCount() == 0)
+            return $result_arr;
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach($rows as $row) {
+            $result = [];
+
+            $result['message_id'] = $row['message_id'];
+            $result['title'] = $row['title'];
+            $result['author'] = $row['author'];
+
+            $formatted_date = "";
+            try {
+                $formatted_date = (new DateTime($row['created_at']))->format('d F Y H:i');
+            } catch (DateMalformedStringException) {
+                echo "Something went wrong.";
+            }
+            $short_content = substr(strip_tags($row['content']), 0, 1000) . " [...]";
+
+            $result['content'] = $short_content;
+            $result['created_at'] = $formatted_date;
+
+            $result_arr[] = $result;
+        }
+    } catch(PDOException) {
+        $errorText = "Something went wrong, try again later!";
+    }
+
+    return $result_arr;
+}
+
 function viewMessage($id, &$errorText): array
 {
     /**
