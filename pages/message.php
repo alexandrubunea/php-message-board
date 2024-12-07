@@ -46,7 +46,7 @@ $comments = viewComments($errorTextViewComments);
         </p>
         <hr>
         <?php if(strcmp($message_data['image_path'], '(null)') != 0): ?>
-        <img class="img-fluid rounded" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
+        <img class="img-thumbnail thumbnail rounded w-50 float-md-start m-3" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
         <?php endif; ?>
         <p class="mt-2">
             <?php echo $message_data['content']; ?>

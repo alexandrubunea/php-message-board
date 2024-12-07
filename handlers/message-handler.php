@@ -40,7 +40,7 @@ function createMessage(&$errorText): void
             $errorText = "Only JPG, JPEG, PNG files are allowed.";
             return;
         }
-        if($_FILES["image"]["size"] > 500000) {
+        if($_FILES["image"]["size"] > 5000000) {
             $errorText = "File is too large.";
             return;
         }
