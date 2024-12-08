@@ -1,11 +1,17 @@
 <?php
-session_start();
-$current_page = "messages";
-
-$errorText = "";
-
 require_once '../handlers/message-handler.php';
-$messages = viewMessages($errorText);
+require_once '../db.php';
+
+/**
+ * @var PDO $conn
+ */
+
+$current_page = "messages";
+$errorText = '';
+
+session_start();
+
+$messages = viewMessages($errorText, $conn);
 
 ?>
 

@@ -1,15 +1,13 @@
 <?php
 
-function createMessage(&$errorText): void
+function createMessage(string &$errorText, PDO $conn): void
 {
-    /**
-     * @var PDO $conn
-     */
+    require_once '../utils.php';
 
-    if($_SERVER['REQUEST_METHOD'] != 'POST')
+    if(!isPOSTRequest())
         return;
 
-    if(!isset($_SESSION['username']))
+    if(!isUserLoggedIn())
         return;
 
     if(strlen(trim($_POST['title'])) === 0) {
@@ -20,8 +18,6 @@ function createMessage(&$errorText): void
         $errorText = 'Message cannot be empty';
         return;
     }
-
-    include '../db.php';
 
     $dest = "(null)";
     if(!empty($_FILES["image"]["name"])) {
@@ -78,13 +74,8 @@ function createMessage(&$errorText): void
     }
 }
 
-function viewMessages(&$errorText): array
+function viewMessages(string &$errorText, PDO $conn): array
 {
-    /**
-     * @var PDO $conn
-     */
-    include '../db.php';
-
     $sql_command = "
         SELECT
             m.message_id,
@@ -149,13 +140,8 @@ function viewMessages(&$errorText): array
     return $result_arr;
 }
 
-function viewMessage($id, &$errorText): array
+function viewMessage(int $id, string &$errorText, PDO $conn): array
 {
-    /**
-     * @var PDO $conn
-     */
-    include '../db.php';
-
     $result_arr = [];
 
     $sql_command = "
@@ -194,6 +180,7 @@ function viewMessage($id, &$errorText): array
         $result_arr['content'] = $res['content'];
         $result_arr['image_path'] = $res['image_path'];
         $result_arr['author'] = $res['author'];
+        $result_arr['is_liked'] = $res['is_liked'];
 
         $formatted_date = "";
         try {

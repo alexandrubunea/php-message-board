@@ -1,16 +1,21 @@
 <?php
-session_start();
-if(empty($_SESSION['username'])) {
-    header('Location:messages.php');
-}
+require_once '../utils.php';
+require_once '../handlers/message-handler.php';
+require_once '../db.php';
+
+/**
+ * @var PDO $conn
+ */
 
 $current_page = "messages";
-
-require_once '../handlers/message-handler.php';
-
 $errorText = '';
-createMessage($errorText);
 
+session_start();
+
+if(!isUserLoggedIn())
+    header('Location:messages.php');
+
+createMessage($errorText, $conn);
 ?>
 <!doctype html>
 <html lang="en">

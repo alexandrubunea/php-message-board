@@ -1,18 +1,23 @@
 <?php
+require_once '../utils.php';
+require_once '../handlers/register-handler.php';
+require_once '../db.php';
+
+/**
+ * @var PDO $conn
+ */
+
+$errorText = '';
+$accountCreated = false;
+$current_page = "register";
+
 session_start();
 
-if(isset($_SESSION['username'])) {
+if(isUserLoggedIn())
     header("Location: ../index.php");
-    exit();
-}
 
-$errorText = "";
-$accountCreated = false;
+handleRequest($errorText, $accountCreated, $conn);
 
-require_once '../handlers/register-handler.php';
-handleRequest($errorText, $accountCreated);
-
-$current_page = "register";
 ?>
 
 <!DOCTYPE html>

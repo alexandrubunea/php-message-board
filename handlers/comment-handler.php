@@ -1,15 +1,13 @@
 <?php
 
-function createComment(&$errorText): void
+function createComment(string &$errorText, PDO $conn): void
 {
-    /**
-     * @var PDO $conn
-     */
+    require_once '../utils.php';
 
-    if($_SERVER['REQUEST_METHOD'] != 'POST')
+    if(!isPOSTRequest())
         return;
 
-    if(!isset($_SESSION['username']))
+    if(!isUserLoggedIn())
         return;
 
     if(empty($_GET['id']))
@@ -19,8 +17,6 @@ function createComment(&$errorText): void
         $errorText = 'The comment cannot be empty.';
         return;
     }
-
-    include '../db.php';
 
     $sql_command = "INSERT INTO comments (author_id, message_id, content) VALUES(:author_id, :message_id, :content)";
     $stmt = $conn->prepare($sql_command);
@@ -40,14 +36,8 @@ function createComment(&$errorText): void
     }
 }
 
-function viewComments(&$errorText): array
+function viewComments(string &$errorText, PDO $conn): array
 {
-    /**
-     * @var PDO $conn
-     */
-
-    include '../db.php';
-
     $result_arr = [];
 
     if(empty($_GET['id']))

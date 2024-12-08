@@ -1,18 +1,22 @@
 <?php
-session_start();
-$current_page = "messages";
-
 require_once '../handlers/message-handler.php';
+require_once '../handlers/comment-handler.php';
+require_once '../db.php';
 
+/**
+ * @var PDO $conn
+ */
+
+$current_page = "messages";
 $errorText = '';
 $errorTextComment = '';
 $errorTextViewComments = '';
 
-$message_data = viewMessage($_GET['id'], $errorText);
+session_start();
 
-require '../handlers/comment-handler.php';
-createComment($errorTextComment);
-$comments = viewComments($errorTextViewComments);
+$message_data = viewMessage($_GET['id'], $errorText, $conn);
+$comments = viewComments($errorTextViewComments, $conn);
+createComment($errorTextComment, $conn);
 
 ?>
 <!doctype html>

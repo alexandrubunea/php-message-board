@@ -1,18 +1,18 @@
 <?php
 session_start();
 
-
 $headers = getallheaders();
 $csrf_token = $headers['X-CSRF-Token'] ?? null;
 $data = json_decode(file_get_contents("php://input"), true);
 
-if(!isset($_SESSION['csrf_token'])){
-    http_response_code(403);
-    echo json_encode([array("status" => "error", "message" => "CSRF Token Required")]);
-    die;
-}
+require_once '../utils.php';
+require_once '../db.php';
 
-if($csrf_token != $_SESSION['csrf_token']) {
+/**
+ * @var PDO $conn
+ */
+
+if(!checkCSRFToken($csrf_token)) {
     http_response_code(403);
     echo json_encode(array("status" => "error", "message" => "Invalid CSRF Token"));
     die;
@@ -26,9 +26,9 @@ if (!isset($data['message_id']) || !is_int($data['message_id']) || $data['messag
 
 $message_id = $data['message_id'];
 
-include '../handlers/like-handler.php';
+require_once '../handlers/like-handler.php';
 
-$does_like_already_exists = doesLikeAlreadyExists(null, $message_id);
+$does_like_already_exists = doesLikeAlreadyExists(null, $message_id, $conn);
 error_log("value: ".$does_like_already_exists);
 if($does_like_already_exists) {
     http_response_code(400);
@@ -41,5 +41,5 @@ if($does_like_already_exists == -1) {
     die;
 }
 
-$res = addLikeToMessage($message_id);
+$res = addLikeToMessage($message_id, $conn);
 echo json_encode(array("status" => $res));

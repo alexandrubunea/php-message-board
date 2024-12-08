@@ -1,18 +1,14 @@
 <?php
 
-function doesLikeAlreadyExists($comment_id, $message_id): int
+function doesLikeAlreadyExists(int|null $comment_id, int|null $message_id, PDO $conn): int
 {
-    /**
-     * @var PDO $conn
-     */
+    require_once '../utils.php';
 
-    if($_SERVER['REQUEST_METHOD'] != 'POST')
+    if(!isPOSTRequest())
         return -1;
 
-    if(!isset($_SESSION['username']))
+    if(!isUserLoggedIn())
         return -1;
-
-    include '../db.php';
 
     $sql_command = "SELECT COUNT(*) FROM likes WHERE user_id = :user_id";
 
@@ -43,17 +39,14 @@ function doesLikeAlreadyExists($comment_id, $message_id): int
     }
 }
 
-function addLikeToMessage($message_id): string
+function addLikeToMessage(string $message_id, PDO $conn): string
 {
-    /**
-     * @var PDO $conn
-     */
-    include '../db.php';
+    require_once '../utils.php';
 
-    if($_SERVER['REQUEST_METHOD'] != 'POST')
+    if(!isPOSTRequest())
         return "error";
 
-    if(!isset($_SESSION['username']))
+    if(!isUserLoggedIn())
         return "error";
 
     $sql_command = "INSERT INTO likes(user_id, message_id) VALUES(:user_id, :message_id)";
@@ -72,17 +65,14 @@ function addLikeToMessage($message_id): string
     return "success";
 }
 
-function removeLikeFromMessage($message_id): string
+function removeLikeFromMessage(string $message_id, PDO $conn): string
 {
-    /**
-     * @var PDO $conn
-     */
-    include '../db.php';
+    require_once '../utils.php';
 
-    if($_SERVER['REQUEST_METHOD'] != 'POST')
+    if(!isPOSTRequest())
         return "error";
 
-    if(!isset($_SESSION['username']))
+    if(!isUserLoggedIn())
         return "error";
 
     $sql_command = "DELETE FROM likes WHERE message_id = :message_id AND user_id = :user_id";
