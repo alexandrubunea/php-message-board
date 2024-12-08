@@ -1,5 +1,7 @@
 <?php
 
+use Random\RandomException;
+
 function handleRequest(&$errorText): void
 {
     /**
@@ -40,10 +42,13 @@ function handleRequest(&$errorText): void
             session_start();
             $_SESSION['user_id'] = $result['user_id'];
             $_SESSION['username'] = $username;
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
             header("Location: ../index.php");
             exit();
 
-        } catch(PDOException) {
+        } catch(PDOException|RandomException $e) {
+            error_log($e->getMessage());
+
             $errorText = "Something went wrong, try again later!";
         }
     }

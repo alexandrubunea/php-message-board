@@ -12,9 +12,6 @@ function createMessage(&$errorText): void
     if(empty($_SESSION))
         return;
 
-    if(empty($_SESSION['username']))
-        return;
-
     if(strlen(trim($_POST['title'])) === 0) {
         $errorText = 'Title cannot be empty';
         return;
@@ -36,6 +33,17 @@ function createMessage(&$errorText): void
             $errorText = "File is not an image.";
             return;
         }
+
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type = finfo_file($finfo, $_FILES["image"]["tmp_name"]);
+        finfo_close($finfo);
+
+        $allowed_mime_types = ['image/jpeg', 'image/png'];
+        if (!in_array($mime_type, $allowed_mime_types)) {
+            $errorText = 'Invalid file type.';
+            return;
+        }
+
         if($image_file_type != "jpg" && $image_file_type != "png" && $image_file_type != "jpeg") {
             $errorText = "Only JPG, JPEG, PNG files are allowed.";
             return;
@@ -63,7 +71,9 @@ function createMessage(&$errorText): void
         ]);
 
         header("Location: ../pages/messages.php");
-    } catch(PDOException) {
+    } catch(PDOException $e) {
+        error_log($e->getMessage());
+
         $errorText = "Something went wrong, try again later!";
     }
 }
@@ -80,23 +90,30 @@ function viewMessages(&$errorText): array
             m.message_id,
             m.title,
             m.content,
-            u.username as author,
+            u.username AS author,
             m.image_path,
-            m.created_at
+            m.created_at,
+            CASE
+                WHEN l.user_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_liked
         FROM
             messages m
         JOIN
-            users u
-        ON
-            m.author = u.user_id
+            users u ON m.author = u.user_id
+        LEFT JOIN
+            likes l ON l.user_id = :user_id AND l.message_id = m.message_id
         ORDER BY
             m.created_at DESC
-        LIMIT 20";
+        LIMIT 20;
+        ";
     $result_arr = [];
 
-
+    $stmt = $conn->prepare($sql_command);
     try {
-        $stmt = $conn->query($sql_command);
+        $stmt->execute([
+            ':user_id' => $_SESSION['user_id'] ?? null
+        ]);
 
         if($stmt->rowCount() == 0)
             return $result_arr;
@@ -108,6 +125,7 @@ function viewMessages(&$errorText): array
             $result['message_id'] = $row['message_id'];
             $result['title'] = $row['title'];
             $result['author'] = $row['author'];
+            $result['is_liked'] = $row['is_liked'];
 
             $formatted_date = "";
             try {
@@ -122,7 +140,9 @@ function viewMessages(&$errorText): array
 
             $result_arr[] = $result;
         }
-    } catch(PDOException) {
+    } catch(PDOException $e) {
+        error_log($e->getMessage());
+
         $errorText = "Something went wrong, try again later!";
     }
 
@@ -144,19 +164,23 @@ function viewMessage($id, &$errorText): array
             m.content,
             u.username as author,
             m.image_path,
-            m.created_at
+            m.created_at,
+            CASE
+                WHEN l.user_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_liked
         FROM
             messages m
-        JOIN
-            users u
-        ON
-            m.author = u.user_id
+        JOIN users u ON m.author = u.user_id
+        LEFT JOIN
+            likes l ON l.user_id = :user_id AND l.message_id = m.message_id
         WHERE m.message_id = :id";
     $stmt = $conn->prepare($sql_command);
 
     try {
         $stmt->execute([
-           ':id' => $id
+            ':id' => $id,
+            ':user_id' => $_SESSION['user_id'] ?? null
         ]);
 
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -179,7 +203,9 @@ function viewMessage($id, &$errorText): array
         }
         $result_arr['created_at'] = $formatted_date;
 
-    } catch (PDOException) {
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+
         $errorText = "Something went wrong, try again later!";
         return $result_arr;
     }

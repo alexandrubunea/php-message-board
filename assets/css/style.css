@@ -240,7 +240,37 @@ body {
     border-right: solid 1px #F7F1F1;
 }
 
-.message-content p:first-of-type, .message .data, .comment .timestamp {
+.data-styling {
     font-size: .7em;
     font-family: "Source Code Pro", monospace;
+}
+
+@media only screen and (max-width: 600px) {
+    .message-text {
+        min-height: 5vh;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .message-text {
+        min-height: 15vh;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .message-text {
+        min-height: 25vh;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .message-text {
+        min-height: 35vh;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .message-text {
+        min-height: 50vh;
+    }
 }

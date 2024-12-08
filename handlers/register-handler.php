@@ -28,6 +28,8 @@ function handleRequest(&$errorText, &$accountCreated): void
             ]);
             $accountCreated = true;
         } catch (PDOException $e) {
+            error_log($e->getMessage());
+
             if($e->getCode() == '23505'){
                 $errorText = "Username already taken";
                 return;

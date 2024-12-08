@@ -43,7 +43,7 @@ $messages = viewMessages($errorText);
             <?php foreach($messages as $message): ?>
                 <div class="message" id="message-<?php echo $message['message_id']; ?>'">
                     <h3><?php echo $message['title']; ?></h3>
-                    <p class="data">
+                    <p class="data data-styling">
                         <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
                         <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
                         <i class="fa-solid fa-heart"></i> 1252 Likes
@@ -54,10 +54,13 @@ $messages = viewMessages($errorText);
                         <a href="message.php?id=<?php echo $message['message_id']; ?>" class="btn btn-success btn-action-message">
                             <i class="fa-solid fa-glasses"></i> Continue reading
                         </a>
-                        <a href="#" class="btn btn-danger btn-action-message <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>">
-                            <i class="fa-solid fa-heart"></i> Like
-                        </a>
-                        <?php if($message['author'] == $_SESSION['username']): ?>
+
+                        <button is_liked="<?php echo $message['is_liked']; ?>" message_id="<?php echo $message['message_id']; ?>"
+                                type="button" class="btn-like btn btn-danger btn-action-message"
+                                <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>>
+                        </button>
+
+                        <?php if(!empty($_SESSION) && $message['author'] == $_SESSION['username']): ?>
                             <a href="#" class="btn btn-secondary btn-action-message">
                                 <i class="fa-solid fa-trash-can"></i> Delete
                             </a>
@@ -69,6 +72,10 @@ $messages = viewMessages($errorText);
     <?php endif; ?>
 </div>
 
+<script>
+    const csrf_token = "<?php echo (empty($_SESSION))? '' : $_SESSION['csrf_token']; ?>";
+</script>
+<script src="../assets/js/messages.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

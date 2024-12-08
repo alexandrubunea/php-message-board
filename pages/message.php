@@ -39,25 +39,28 @@ $comments = viewComments($errorTextViewComments);
     <?php else: ?>
     <div class="message-content mt-5">
         <h1><?php echo $message_data['title']; ?></h1>
-        <p>
+        <p class="data-styling">
             <i class="fa-solid fa-user"></i> Wrote by <?php echo $message_data['author']; ?> <br>
             <i class="fa-solid fa-clock"></i> <?php echo $message_data['created_at']; ?> <br>
             <i class="fa-solid fa-heart"></i> 1252 Likes
         </p>
         <hr>
-        <?php if(strcmp($message_data['image_path'], '(null)') != 0): ?>
-        <img class="img-thumbnail thumbnail rounded w-50 float-md-start m-3" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
-        <?php endif; ?>
-        <p class="mt-2">
-            <?php echo $message_data['content']; ?>
-        </p>
+        <div class="p-3 message-text">
+            <?php if(strcmp($message_data['image_path'], '(null)') != 0): ?>
+                <img class="img-thumbnail thumbnail rounded w-50 float-md-start m-3" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
+            <?php endif; ?>
+            <p class="mt-2">
+                <?php echo $message_data['content']; ?>
+            </p>
+        </div>
         <hr>
         <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-            <a href="#" class="btn btn-danger btn-action-message">
-                <i class="fa-solid fa-heart"></i> Like
-            </a>
+            <button is_liked="<?php echo $message_data['is_liked']; ?>" message_id="<?php echo $_GET['id']; ?>"
+                    type="button" class="btn-like btn btn-danger btn-action-message"
+                    <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>>
+            </button>
 
-            <?php if($message_data['author'] == $_SESSION['username']): ?>
+            <?php if(!empty($_SESSION) && ['author'] == $_SESSION['username']): ?>
                 <a href="#" class="btn btn-secondary btn-action-message">
                     <i class="fa-solid fa-trash-can"></i> Delete
                 </a>
@@ -82,7 +85,7 @@ $comments = viewComments($errorTextViewComments);
                 <?php echo (empty($_SESSION))? "You must to be authenticated to comment." : "Add comment as " . $_SESSION['username'] . ':'; ?>
             </label>
             <textarea class="form-control" name="comment-text-area" id="comment-text-area" placeholder="Type your thoughts..." required <?php echo (empty($_SESSION))? 'disabled' : ''; ?>></textarea>
-            <button type="submit" class="btn btn-secondary btn-action-message my-3"><i class="fa-solid fa-arrow-right"></i> Add Comment</button>
+            <button type="submit" class="btn btn-secondary btn-action-message my-3" <?php echo (empty($_SESSION))? 'disabled' : ''; ?>><i class="fa-solid fa-arrow-right"></i> Add Comment</button>
         </form>
         <div class="my-5">
             <?php if(sizeof($comments) == 0): ?>
@@ -100,14 +103,14 @@ $comments = viewComments($errorTextViewComments);
                     </div>
                 <?php else: ?>
                     <?php foreach($comments as $comment): ?>
-                        <div class="px-2 py-2 my-3 comment d-flex flex-row rounded">
-                            <div class="d-flex flex-column px-4 my-auto cassette">
+                        <div class="px-2 py-3 comment d-flex flex-row rounded">
+                            <div class="d-flex flex-column px-4 cassette">
                                 <i class="fa-solid fa-circle-user mx-auto user-icon"></i>
                                 <p class="mx-auto username mt-2"><?php echo $comment['author']; ?></p>
                             </div>
                             <div class="d-flex flex-column w-100 px-4 pt-2 pb-0">
                                 <p class="comment-text"><?php echo $comment['content']; ?></p>
-                                <p class="small text-end timestamp">
+                                <p class="small text-end data-styling">
                                     <i class="fa-solid fa-clock"></i> <?php echo $comment['date']; ?>
                                 </p>
                             </div>
@@ -120,6 +123,11 @@ $comments = viewComments($errorTextViewComments);
     </div>
     <?php endif; ?>
 </div>
+
+<script>
+    const csrf_token = "<?php echo (empty($_SESSION))? '' : $_SESSION['csrf_token']; ?>";
+</script>
+<script src="../assets/js/message.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

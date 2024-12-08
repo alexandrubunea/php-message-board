@@ -33,7 +33,9 @@ function createComment(&$errorText): void
         ]);
 
         header('Location: ../pages/message.php?id=' . $_GET['id'] . '#comments');
-    } catch(PDOException) {
+    } catch(PDOException $e) {
+        error_log($e->getMessage());
+
         $errorText = 'Something went wrong while trying to create comment.';
     }
 }
@@ -91,7 +93,9 @@ function viewComments(&$errorText): array
 
             $result_arr[] = $result;
         }
-    } catch(PDOException) {
+    } catch(PDOException $e) {
+        error_log($e->getMessage());
+
         $errorText = 'Something went wrong while trying to view comments.';
         return $result_arr;
     }
