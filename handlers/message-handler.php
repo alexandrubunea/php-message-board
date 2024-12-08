@@ -9,7 +9,7 @@ function createMessage(&$errorText): void
     if($_SERVER['REQUEST_METHOD'] != 'POST')
         return;
 
-    if(empty($_SESSION))
+    if(!isset($_SESSION['username']))
         return;
 
     if(strlen(trim($_POST['title'])) === 0) {

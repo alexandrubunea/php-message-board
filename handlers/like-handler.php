@@ -9,7 +9,7 @@ function doesLikeAlreadyExists($comment_id, $message_id): int
     if($_SERVER['REQUEST_METHOD'] != 'POST')
         return -1;
 
-    if(empty($_SESSION))
+    if(!isset($_SESSION['username']))
         return -1;
 
     include '../db.php';
@@ -53,7 +53,7 @@ function addLikeToMessage($message_id): string
     if($_SERVER['REQUEST_METHOD'] != 'POST')
         return "error";
 
-    if(empty($_SESSION))
+    if(!isset($_SESSION['username']))
         return "error";
 
     $sql_command = "INSERT INTO likes(user_id, message_id) VALUES(:user_id, :message_id)";
@@ -82,7 +82,7 @@ function removeLikeFromMessage($message_id): string
     if($_SERVER['REQUEST_METHOD'] != 'POST')
         return "error";
 
-    if(empty($_SESSION))
+    if(!isset($_SESSION['username']))
         return "error";
 
     $sql_command = "DELETE FROM likes WHERE message_id = :message_id AND user_id = :user_id";

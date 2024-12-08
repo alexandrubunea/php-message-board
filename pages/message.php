@@ -103,7 +103,7 @@ $comments = viewComments($errorTextViewComments);
                     </div>
                 <?php else: ?>
                     <?php foreach($comments as $comment): ?>
-                        <div class="px-2 py-3 comment d-flex flex-row rounded">
+                        <div class="px-2 py-3 comment d-flex flex-row rounded my-3">
                             <div class="d-flex flex-column px-4 cassette">
                                 <i class="fa-solid fa-circle-user mx-auto user-icon"></i>
                                 <p class="mx-auto username mt-2"><?php echo $comment['author']; ?></p>
