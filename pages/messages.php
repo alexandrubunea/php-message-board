@@ -52,7 +52,7 @@ $messages = viewMessages($errorText, $conn);
                     <p class="data data-styling">
                         <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
                         <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
-                        <i class="fa-solid fa-heart"></i> 1252 Likes
+                        <i class="fa-solid fa-heart"></i> <?php echo $message['likes']; ?> Likes
                     </p>
                     <p class="short-text"><?php echo $message['content']; ?></p>
                     <hr>

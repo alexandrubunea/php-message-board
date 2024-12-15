@@ -77,27 +77,32 @@ function createMessage(string &$errorText, PDO $conn): void
 function viewMessages(string &$errorText, PDO $conn): array
 {
     $sql_command = "
-        SELECT
-            m.message_id,
-            m.title,
-            m.content,
-            u.username AS author,
-            m.image_path,
-            m.created_at,
-            CASE
-                WHEN l.user_id IS NOT NULL THEN 1
-                ELSE 0
-            END AS is_liked
-        FROM
-            messages m
-        JOIN
-            users u ON m.author = u.user_id
-        LEFT JOIN
-            likes l ON l.user_id = :user_id AND l.message_id = m.message_id
-        ORDER BY
-            m.created_at DESC
-        LIMIT 20;
-        ";
+SELECT
+    m.message_id,
+    m.title,
+    m.content,
+    u.username AS author,
+    m.image_path,
+    m.created_at,
+    CASE
+        WHEN l.user_id IS NOT NULL THEN 1
+        ELSE 0
+    END AS is_liked,
+    COUNT(l2) AS number_of_likes,
+    (COUNT(l2) - EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - m.created_at)) / 3600) AS score
+    FROM
+        messages m
+            JOIN
+        users u ON m.author = u.user_id
+            LEFT JOIN
+        likes l ON l.user_id = :user_id AND l.message_id = m.message_id
+            LEFT JOIN
+        likes l2 ON l2.message_id = m.message_id
+    GROUP BY
+        m.message_id, u.username, m.title, m.content, m.image_path, m.created_at, l.user_id
+    ORDER BY
+        score DESC
+    LIMIT 50;";
     $result_arr = [];
 
     $stmt = $conn->prepare($sql_command);
@@ -117,6 +122,7 @@ function viewMessages(string &$errorText, PDO $conn): array
             $result['title'] = $row['title'];
             $result['author'] = $row['author'];
             $result['is_liked'] = $row['is_liked'];
+            $result['likes'] = $row['number_of_likes'];
 
             $formatted_date = "";
             try {
