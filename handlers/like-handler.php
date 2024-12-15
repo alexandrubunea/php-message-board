@@ -39,7 +39,7 @@ function doesLikeAlreadyExists(int|null $comment_id, int|null $message_id, PDO $
     }
 }
 
-function addLikeToMessage(string $message_id, PDO $conn): string
+function addLikeToMessage(int $message_id, PDO $conn): string
 {
     require_once '../utils.php';
 
@@ -65,7 +65,7 @@ function addLikeToMessage(string $message_id, PDO $conn): string
     return "success";
 }
 
-function removeLikeFromMessage(string $message_id, PDO $conn): string
+function removeLikeFromMessage(int $message_id, PDO $conn): string
 {
     require_once '../utils.php';
 
@@ -91,16 +91,54 @@ function removeLikeFromMessage(string $message_id, PDO $conn): string
     return "success";
 }
 
-function addLikeToComment(): void
+function addLikeToComment(int $comment_id, PDO $conn): string
 {
-    /**
-     * @var PDO $conn
-     */
+    require_once '../utils.php';
+
+    if(!isPOSTRequest())
+        return "error";
+
+    if(!isUserLoggedIn())
+        return "error";
+
+    $sql_command = "INSERT INTO likes(user_id, comment_id) VALUES(:user_id, :comment_id)";
+    $stmt = $conn->prepare($sql_command);
+
+    try {
+        $stmt->execute([
+            ':user_id' => $_SESSION['user_id'],
+            ':comment_id' => $comment_id
+        ]);
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return "error";
+    }
+
+    return "success";
 }
 
-function removeLikeFromComment(): void
+function removeLikeFromComment(int $comment_id, PDO $conn): string
 {
-    /**
-     * @var PDO $conn
-     */
+    require_once '../utils.php';
+
+    if(!isPOSTRequest())
+        return "error";
+
+    if(!isUserLoggedIn())
+        return "error";
+
+    $sql_command = "DELETE FROM likes WHERE comment_id = :comment_id AND user_id = :user_id";
+    $stmt = $conn->prepare($sql_command);
+
+    try {
+        $stmt->execute([
+            ':user_id' => $_SESSION['user_id'],
+            ':comment_id' => $comment_id
+        ]);
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return "error";
+    }
+
+    return "success";
 }

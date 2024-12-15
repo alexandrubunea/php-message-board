@@ -107,20 +107,36 @@ createComment($errorTextComment, $conn);
                         </div>
                     </div>
                 <?php else: ?>
-                    <?php foreach($comments as $comment): ?>
-                        <div class="px-2 py-3 comment d-flex flex-row rounded my-3">
-                            <div class="d-flex flex-column px-4 cassette">
-                                <i class="fa-solid fa-circle-user mx-auto user-icon"></i>
-                                <p class="mx-auto username mt-2"><?php echo $comment['author']; ?></p>
+                    <?php $id = 0; ?>
+                    <div class="comments">
+                        <?php foreach($comments as $comment): ?>
+                            <div id="comment-<?php echo $comment['comment_id']; ?>" class="px-2 py-3 comment d-flex flex-row rounded my-3">
+                                <div class="d-flex flex-column px-4 cassette">
+                                    <i class="fa-solid fa-circle-user mx-auto user-icon"></i>
+                                    <p class="mx-auto username mt-2"><?php echo $comment['author']; ?></p>
+                                </div>
+                                <div class="d-flex flex-column w-100 px-4 pt-2 pb-0">
+                                    <p class="comment-text"><?php echo $comment['content']; ?></p>
+                                    <p class="small text-end data-styling">
+                                        <i class="fa-solid fa-clock"></i> <?php echo $comment['date']; ?> <br>
+                                        <i class="fa-solid fa-heart"></i>
+                                        <span id="number_of_likes_<?php echo $id; ?>"><?php echo $comment['likes']; ?></span> Likes
+                                    </p>
+                                    <div class="d-flex flex-row w-100 gap-2">
+                                        <button is_liked="<?php echo $comment['is_liked']; ?>" comment_id="<?php echo $comment['comment_id']; ?>"
+                                                class="btn-comment-like btn btn-outline-danger btn-comment-action fw-bold"
+                                            <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
+                                            <i class="fa-solid fa-heart"></i> Like</button>
+                                        <?php if(isUserLoggedIn() && $comment['author'] == $_SESSION['username']): ?>
+                                            <button comment_id="<?php echo $comment['comment_id']; ?>"
+                                                    class="btn-comment-delete btn btn-outline-secondary btn-comment-action fw-bold"><i class="fa-solid fa-trash-can"></i> Delete</button>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="d-flex flex-column w-100 px-4 pt-2 pb-0">
-                                <p class="comment-text"><?php echo $comment['content']; ?></p>
-                                <p class="small text-end data-styling">
-                                    <i class="fa-solid fa-clock"></i> <?php echo $comment['date']; ?>
-                                </p>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                            <?php $id++ ?>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
 
             <?php endif; ?>

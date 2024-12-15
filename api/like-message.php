@@ -32,7 +32,7 @@ $does_like_already_exists = doesLikeAlreadyExists(null, $message_id, $conn);
 error_log("value: ".$does_like_already_exists);
 if($does_like_already_exists) {
     http_response_code(400);
-    echo json_encode(array("status" => "error", "message" => "You have already liked this comment"));
+    echo json_encode(array("status" => "error", "message" => "You have already liked this message"));
     die;
 }
 if($does_like_already_exists == -1) {

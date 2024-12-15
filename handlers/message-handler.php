@@ -214,7 +214,7 @@ function viewMessage(int $id, string &$errorText, PDO $conn): array
     return $result_arr;
 }
 
-function checkOwnership(int $message_id, int $user_id, PDO $conn): bool
+function checkMessageOwnership(int $message_id, int $user_id, PDO $conn): bool
 {
     $sql_command = "SELECT COUNT(*) FROM messages WHERE message_id = :message_id AND author = :user_id";
     $stmt = $conn->prepare($sql_command);
@@ -242,7 +242,7 @@ function deleteMessage(int $message_id, PDO $conn): string
     if(!isUserLoggedIn())
         return "error";
 
-    if(!checkOwnership($message_id, $_SESSION['user_id'], $conn))
+    if(!checkMessageOwnership($message_id, $_SESSION['user_id'], $conn))
         return "error";
 
     $conn->beginTransaction();

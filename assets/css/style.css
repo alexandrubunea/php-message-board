@@ -212,6 +212,56 @@ body {
     transition-duration:500ms;
 }
 
+.btn.btn-outline-danger {
+    border-color: #FF375F;
+    transition: all;
+    transition-duration:500ms;
+    font-size: 1em;
+}
+
+.btn.btn-outline-danger:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+    background-color: #FF375F !important;
+    color: #F5F5F5;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.btn.btn-outline-danger:hover {
+    background-color: #FF375F !important;
+    color: #F5F5F5;
+    transition: all;
+    transition-duration:500ms;
+
+}
+
+.btn.btn-outline-secondary {
+    border-color: #F23A29;
+    color: #F23A29;
+    transition: all;
+    font-size: 1em;
+}
+
+.btn.btn-outline-secondary:focus {
+    outline: none !important;
+    border:1px solid #F7F1F1;
+    box-shadow: 0 0 5px #F7F1F1;
+    background-color: #f45040 !important;
+    color: #F5F5F5;
+    transition: all;
+    transition-duration:500ms;
+}
+
+.btn.btn-outline-secondary:hover {
+    background-color: #f45040 !important;
+    color: #F5F5F5;
+    transition: all;
+    transition-duration:500ms;
+}
+
+
 .create-message-form {
     padding: 2em;
     background-color: #2b2a2a;
