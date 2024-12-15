@@ -48,36 +48,38 @@ $messages = viewMessages($errorText, $conn);
             </div>
         <?php else: ?>
             <?php $id = 0; ?>
-            <?php foreach($messages as $message): ?>
-                <div class="message" id="message-<?php echo $message['message_id']; ?>'">
-                    <h3><?php echo $message['title']; ?></h3>
-                    <p class="data data-styling">
-                        <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
-                        <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
-                        <i class="fa-solid fa-heart"></i>
-                        <span id="number_of_likes_<?php echo $id; ?>"><?php echo $message['likes']; ?></span> Likes
-                    </p>
-                    <p class="short-text"><?php echo $message['content']; ?></p>
-                    <hr>
-                    <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
-                        <a href="message.php?id=<?php echo $message['message_id']; ?>" class="btn btn-success btn-action-message">
-                            <i class="fa-solid fa-glasses"></i> Continue reading
-                        </a>
-
-                        <button is_liked="<?php echo $message['is_liked']; ?>" message_id="<?php echo $message['message_id']; ?>"
-                                type="button" class="btn-like btn btn-danger btn-action-message"
-                                <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
-                        </button>
-
-                        <?php if(isUserLoggedIn() && $message['author'] == $_SESSION['username']): ?>
-                            <a href="#" class="btn btn-secondary btn-action-message">
-                                <i class="fa-solid fa-trash-can"></i> Delete
+            <div class="messages mb-5">
+                <?php foreach($messages as $message): ?>
+                    <div class="message" id="message-<?php echo $message['message_id']; ?>">
+                        <h3><?php echo $message['title']; ?></h3>
+                        <p class="data data-styling">
+                            <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
+                            <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
+                            <i class="fa-solid fa-heart"></i>
+                            <span id="number_of_likes_<?php echo $id; ?>"><?php echo $message['likes']; ?></span> Likes
+                        </p>
+                        <p class="short-text"><?php echo $message['content']; ?></p>
+                        <hr>
+                        <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
+                            <a href="message.php?id=<?php echo $message['message_id']; ?>" class="btn btn-success btn-action-message">
+                                <i class="fa-solid fa-glasses"></i> Continue reading
                             </a>
-                        <?php endif; ?>
+
+                            <button is_liked="<?php echo $message['is_liked']; ?>" message_id="<?php echo $message['message_id']; ?>"
+                                    type="button" class="btn-like btn btn-danger btn-action-message"
+                                <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
+                            </button>
+
+                            <?php if(isUserLoggedIn() && $message['author'] == $_SESSION['username']): ?>
+                                <button class="btn-delete btn btn-secondary btn-action-message" message_id="<?php echo $message['message_id']; ?>">
+                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                </button>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                </div>
-                <?php $id++; ?>
-            <?php endforeach; ?>
+                    <?php $id++; ?>
+                <?php endforeach; ?>
+            </div>
         <?php endif; ?>
     <?php endif; ?>
 </div>

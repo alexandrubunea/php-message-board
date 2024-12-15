@@ -80,32 +80,32 @@ function createMessage(string &$errorText, PDO $conn): void
 function viewMessages(string &$errorText, PDO $conn): array
 {
     $sql_command = "
-SELECT
-    m.message_id,
-    m.title,
-    m.content,
-    u.username AS author,
-    m.image_path,
-    m.created_at,
-    CASE
-        WHEN l.user_id IS NOT NULL THEN 1
-        ELSE 0
-    END AS is_liked,
-    COUNT(l2) AS number_of_likes,
-    (COUNT(l2) - EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - m.created_at)) / 3600) AS score
-    FROM
-        messages m
-            JOIN
-        users u ON m.author = u.user_id
-            LEFT JOIN
-        likes l ON l.user_id = :user_id AND l.message_id = m.message_id
-            LEFT JOIN
-        likes l2 ON l2.message_id = m.message_id
-    GROUP BY
-        m.message_id, u.username, m.title, m.content, m.image_path, m.created_at, l.user_id
-    ORDER BY
-        score DESC
-    LIMIT 50;";
+        SELECT
+            m.message_id,
+            m.title,
+            m.content,
+            u.username AS author,
+            m.image_path,
+            m.created_at,
+            CASE
+                WHEN l.user_id IS NOT NULL THEN 1
+                ELSE 0
+            END AS is_liked,
+            COUNT(l2) AS number_of_likes,
+            (COUNT(l2) - EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - m.created_at)) / 3600) AS score
+            FROM
+                messages m
+                    JOIN
+                users u ON m.author = u.user_id
+                    LEFT JOIN
+                likes l ON l.user_id = :user_id AND l.message_id = m.message_id
+                    LEFT JOIN
+                likes l2 ON l2.message_id = m.message_id
+            GROUP BY
+                m.message_id, u.username, m.title, m.content, m.image_path, m.created_at, l.user_id
+            ORDER BY
+                score DESC
+            LIMIT 50;";
     $result_arr = [];
 
     $stmt = $conn->prepare($sql_command);
@@ -212,4 +212,58 @@ function viewMessage(int $id, string &$errorText, PDO $conn): array
     }
 
     return $result_arr;
+}
+
+function checkOwnership(int $message_id, int $user_id, PDO $conn): bool
+{
+    $sql_command = "SELECT COUNT(*) FROM messages WHERE message_id = :message_id AND author = :user_id";
+    $stmt = $conn->prepare($sql_command);
+
+    try {
+        $stmt->execute([
+            ':message_id' => $message_id,
+            ':user_id' => $user_id
+        ]);
+
+        return $stmt->fetchColumn() > 0;
+    } catch(PDOException $e) {
+        error_log($e->getMessage());
+        return false;
+    }
+}
+
+function deleteMessage(int $message_id, PDO $conn): string
+{
+    require_once '../utils.php';
+
+    if(!isPOSTRequest())
+        return "error";
+
+    if(!isUserLoggedIn())
+        return "error";
+
+    if(!checkOwnership($message_id, $_SESSION['user_id'], $conn))
+        return "error";
+
+    $conn->beginTransaction();
+    try {
+        $stmt = $conn->prepare("DELETE FROM likes WHERE message_id = :message_id");
+        $stmt->bindParam(':message_id', $message_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $stmt = $conn->prepare("DELETE FROM comments WHERE message_id = :message_id");
+        $stmt->bindParam(':message_id', $message_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $stmt = $conn->prepare("DELETE FROM messages WHERE message_id = :message_id");
+        $stmt->bindParam(':message_id', $message_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $conn->commit();
+    } catch (PDOException $e) {
+        error_log($e->getMessage());
+        return "error";
+    }
+
+    return "success";
 }

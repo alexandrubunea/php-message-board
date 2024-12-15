@@ -64,10 +64,10 @@ createComment($errorTextComment, $conn);
                     <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
             </button>
 
-            <?php if(isUserLoggedIn() && ['author'] == $_SESSION['username']): ?>
-                <a href="#" class="btn btn-secondary btn-action-message">
+            <?php if(isUserLoggedIn() && $message_data['author'] == $_SESSION['username']): ?>
+                <button class="btn-delete btn btn-secondary btn-action-message" message_id="<?php echo $_GET['id']; ?>">
                     <i class="fa-solid fa-trash-can"></i> Delete
-                </a>
+                </button>
             <?php endif; ?>
         </div>
     </div>

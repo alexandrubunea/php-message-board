@@ -1,4 +1,5 @@
 let like_button = document.getElementsByClassName('btn-like')[0];
+let delete_button = document.getElementsByClassName('btn-delete')[0];
 
 let is_button_liked = Number(like_button.getAttribute('is_liked'));
 if (is_button_liked)
@@ -38,4 +39,25 @@ function add_event_listener_like_button() {
     });
 }
 
+function add_event_listener_delete_button() {
+    if(!csrf_token)
+        return;
+
+    const message_id = Number(delete_button.getAttribute('message_id'));
+
+    delete_button.addEventListener('click', () => {
+        fetch('../../api/delete-message.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrf_token,
+            },
+            body: JSON.stringify({ message_id: message_id })
+        }).then(() => {
+            window.location.replace('../../pages/messages.php');
+        });
+    });
+}
+
 add_event_listener_like_button();
+add_event_listener_delete_button();
