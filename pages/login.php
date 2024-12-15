@@ -8,13 +8,13 @@ require_once '../db.php';
  */
 
 $errorText = '';
-$accountCreated = false;
 $current_page = "login";
 
 session_start();
 
-if(!isUserLoggedIn())
+if(isUserLoggedIn()) {
     header("Location: ../index.php");
+}
 
 handleRequest($errorText, $conn);
 
