@@ -104,21 +104,3 @@ function removeLikeFromComment(): void
      * @var PDO $conn
      */
 }
-
-function fetchLikesOfMessage($message_id): int
-{
-    /**
-     * @var PDO $conn
-     */
-
-    return 0;
-}
-
-function fetchLikesOfComment($message_id): int
-{
-    /**
-     * @var PDO $conn
-     */
-
-    return 0;
-}

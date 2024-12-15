@@ -6,6 +6,9 @@ function handleRequest(string &$errorText, bool &$accountCreated, PDO $conn): vo
     if(!isPOSTRequest())
         return;
 
+    if(isset($_POST['csrf_token']) && !checkCSRFToken($_POST['csrf_token']))
+        return;
+
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
@@ -25,6 +28,7 @@ function handleRequest(string &$errorText, bool &$accountCreated, PDO $conn): vo
             ':password' => $password_hashed
         ]);
         $accountCreated = true;
+        unset($_SESSION['csrf_token']);
     } catch (PDOException $e) {
         error_log($e->getMessage());
 

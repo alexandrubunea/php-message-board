@@ -1,6 +1,5 @@
 <?php
 session_start();
-// TODO: Add CSRF Token to comment form, create message form, create account form, login form
 $current_page = "homepage";
 ?>
 

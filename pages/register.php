@@ -1,4 +1,7 @@
 <?php
+
+use Random\RandomException;
+
 require_once '../utils.php';
 require_once '../handlers/register-handler.php';
 require_once '../db.php';
@@ -12,6 +15,16 @@ $accountCreated = false;
 $current_page = "register";
 
 session_start();
+
+if($_SERVER['REQUEST_METHOD'] == 'GET') {
+    try {
+        $one_time_csrf_token = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token'] = $one_time_csrf_token;
+    } catch (RandomException $e) {
+        error_log($e->getMessage());
+        $errorText = "Something went wrong, try again later!";
+    }
+}
 
 if(isUserLoggedIn())
     header("Location: ../index.php");
@@ -44,6 +57,8 @@ handleRequest($errorText, $accountCreated, $conn);
         </p>
 
         <form class="mb-5" action="register.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
             <div class="mb-3">
                 <label for="username-input" class="form-label">Username:</label>
                 <input type="text" class="form-control" id="username-input" aria-describedby="username-help" name="username" required>

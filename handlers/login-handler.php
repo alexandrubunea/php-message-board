@@ -9,6 +9,9 @@ function handleRequest(string &$errorText, PDO $conn): void
     if(!isPOSTRequest())
         return;
 
+    if(isset($_POST['csrf_token']) && !checkCSRFToken($_POST['csrf_token']))
+        return;
+
     if(isUserLoggedIn()) {
         header("Location: ../index.php");
         die;

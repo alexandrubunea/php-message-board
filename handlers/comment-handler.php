@@ -10,6 +10,9 @@ function createComment(string &$errorText, PDO $conn): void
     if(!isUserLoggedIn())
         return;
 
+    if(isset($_POST['csrf_token']) && !checkCSRFToken($_POST['csrf_token']))
+        return;
+
     if(empty($_GET['id']))
         return;
 

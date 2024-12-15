@@ -51,7 +51,7 @@ createComment($errorTextComment, $conn);
         <hr>
         <div class="p-3 message-text">
             <?php if(strcmp($message_data['image_path'], '(null)') != 0): ?>
-                <img class="img-thumbnail thumbnail rounded w-50 float-md-start m-3" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
+                <img class="img-thumbnail thumbnail rounded w-50 m-3" alt="Attached image" src="<?php echo $message_data['image_path']; ?>">
             <?php endif; ?>
             <p class="mt-2">
                 <?php echo $message_data['content']; ?>
@@ -85,6 +85,7 @@ createComment($errorTextComment, $conn);
             <?php endif; ?>
         </div>
         <form action="message.php?id=<?php echo $_GET['id']; ?>" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <label for="comment-text-area" class="small mb-3">
                 <?php echo (empty($_SESSION))? "You must to be authenticated to comment." : "Add comment as " . $_SESSION['username'] . ':'; ?>
             </label>
@@ -128,9 +129,6 @@ createComment($errorTextComment, $conn);
     <?php endif; ?>
 </div>
 
-<script>
-    const csrf_token = "<?php echo (empty($_SESSION))? '' : $_SESSION['csrf_token']; ?>";
-</script>
 <script src="../assets/js/message.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

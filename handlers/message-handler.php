@@ -10,6 +10,9 @@ function createMessage(string &$errorText, PDO $conn): void
     if(!isUserLoggedIn())
         return;
 
+    if(isset($_POST['csrf_token']) && !checkCSRFToken($_POST['csrf_token']))
+        return;
+
     if(strlen(trim($_POST['title'])) === 0) {
         $errorText = 'Title cannot be empty';
         return;

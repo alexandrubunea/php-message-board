@@ -32,6 +32,8 @@ createMessage($errorText, $conn);
 <?php include '../templates/header.php'; ?>
 <div class="container pt-5">
     <form class="create-message-form mx-auto w-75" action="create-message.php" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
         <label for="message-title" class="form-label">Title of the message:</label>
         <input class="form-control" type="text" id="message-title" placeholder="Try something new..." name="title" required>
 
