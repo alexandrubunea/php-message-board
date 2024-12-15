@@ -6,6 +6,8 @@ if (is_button_liked)
 else
     like_button.innerHTML = '<i class="fa-solid fa-heart"></i> Like';
 
+let likes_count = document.getElementById('number_of_likes');
+
 function add_event_listener_like_button() {
     if (!csrf_token)
         return;
@@ -26,9 +28,11 @@ function add_event_listener_like_button() {
             if (!is_button_liked) {
                 like_button.innerHTML = '<i class="fa-solid fa-heart-crack"></i> Unlike';
                 like_button.setAttribute('is_liked', '1');
+                likes_count.textContent = String(Number(likes_count.textContent) + 1);
             } else {
                 like_button.innerHTML = '<i class="fa-solid fa-heart"></i> Like';
                 like_button.setAttribute('is_liked', '0');
+                likes_count.textContent = String(Number(likes_count.textContent) - 1);
             }
         });
     });

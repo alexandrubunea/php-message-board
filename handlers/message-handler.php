@@ -163,13 +163,17 @@ function viewMessage(int $id, string &$errorText, PDO $conn): array
             CASE
                 WHEN l.user_id IS NOT NULL THEN 1
                 ELSE 0
-            END AS is_liked
+                END AS is_liked,
+            COUNT(l2) as number_of_likes
         FROM
             messages m
-        JOIN users u ON m.author = u.user_id
-        LEFT JOIN
-            likes l ON l.user_id = :user_id AND l.message_id = m.message_id
-        WHERE m.message_id = :id";
+                JOIN users u ON m.author = u.user_id
+                LEFT JOIN
+                    likes l ON l.user_id = :user_id AND l.message_id = m.message_id
+                LEFT JOIN
+                    likes l2 ON l2.message_id = m.message_id
+        WHERE m.message_id = :id
+        GROUP BY m.title, m.content, u.username, m.image_path, m.created_at, l.user_id;";
     $stmt = $conn->prepare($sql_command);
 
     try {
@@ -190,6 +194,7 @@ function viewMessage(int $id, string &$errorText, PDO $conn): array
         $result_arr['image_path'] = $res['image_path'];
         $result_arr['author'] = $res['author'];
         $result_arr['is_liked'] = $res['is_liked'];
+        $result_arr['likes'] = $res['number_of_likes'];
 
         $formatted_date = "";
         try {

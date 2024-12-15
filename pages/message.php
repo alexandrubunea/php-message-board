@@ -46,7 +46,7 @@ createComment($errorTextComment, $conn);
         <p class="data-styling">
             <i class="fa-solid fa-user"></i> Wrote by <?php echo $message_data['author']; ?> <br>
             <i class="fa-solid fa-clock"></i> <?php echo $message_data['created_at']; ?> <br>
-            <i class="fa-solid fa-heart"></i> 1252 Likes
+            <i class="fa-solid fa-heart"></i> <span id="number_of_likes"><?php echo $message_data['likes']; ?></span> Likes
         </p>
         <hr>
         <div class="p-3 message-text">
@@ -61,10 +61,10 @@ createComment($errorTextComment, $conn);
         <div class="d-flex flex-column flex-lg-row align-items-center gap-2">
             <button is_liked="<?php echo $message_data['is_liked']; ?>" message_id="<?php echo $_GET['id']; ?>"
                     type="button" class="btn-like btn btn-danger btn-action-message"
-                    <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>>
+                    <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
             </button>
 
-            <?php if(!empty($_SESSION) && ['author'] == $_SESSION['username']): ?>
+            <?php if(isUserLoggedIn() && ['author'] == $_SESSION['username']): ?>
                 <a href="#" class="btn btn-secondary btn-action-message">
                     <i class="fa-solid fa-trash-can"></i> Delete
                 </a>
@@ -85,12 +85,12 @@ createComment($errorTextComment, $conn);
             <?php endif; ?>
         </div>
         <form action="message.php?id=<?php echo $_GET['id']; ?>" method="POST">
-            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+            <input type="hidden" name="csrf_token" value="<?php echo (!isUserLoggedIn())? '' : $_SESSION['csrf_token']; ?>">
             <label for="comment-text-area" class="small mb-3">
-                <?php echo (empty($_SESSION))? "You must to be authenticated to comment." : "Add comment as " . $_SESSION['username'] . ':'; ?>
+                <?php echo (!isUserLoggedIn())? "You must to be authenticated to comment." : "Add comment as " . $_SESSION['username'] . ':'; ?>
             </label>
-            <textarea class="form-control" name="comment-text-area" id="comment-text-area" placeholder="Type your thoughts..." required <?php echo (empty($_SESSION))? 'disabled' : ''; ?>></textarea>
-            <button type="submit" class="btn btn-secondary btn-action-message my-3" <?php echo (empty($_SESSION))? 'disabled' : ''; ?>><i class="fa-solid fa-arrow-right"></i> Add Comment</button>
+            <textarea class="form-control" name="comment-text-area" id="comment-text-area" placeholder="Type your thoughts..." required <?php echo (!isUserLoggedIn())? 'disabled' : ''; ?>></textarea>
+            <button type="submit" class="btn btn-secondary btn-action-message my-3" <?php echo (!isUserLoggedIn())? 'disabled' : ''; ?>><i class="fa-solid fa-arrow-right"></i> Add Comment</button>
         </form>
         <div class="my-5">
             <?php if(sizeof($comments) == 0): ?>
@@ -129,6 +129,9 @@ createComment($errorTextComment, $conn);
     <?php endif; ?>
 </div>
 
+<script>
+    const csrf_token = "<?php echo (!isUserLoggedIn())? '' : $_SESSION['csrf_token']; ?>";
+</script>
 <script src="../assets/js/message.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

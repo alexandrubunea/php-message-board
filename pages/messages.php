@@ -1,6 +1,7 @@
 <?php
 require_once '../handlers/message-handler.php';
 require_once '../db.php';
+require_once '../utils.php';
 
 /**
  * @var PDO $conn
@@ -30,7 +31,7 @@ $messages = viewMessages($errorText, $conn);
 <?php include '../templates/header.php'; ?>
 <div class="container pt-5">
     <a href="create-message.php" class="btn btn-primary btn-create-message
-        <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>"><i class="fa-solid fa-square-plus"></i> Create message</a>
+        <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>"><i class="fa-solid fa-square-plus"></i> Create message</a>
     <hr>
     <?php if(!empty($errorText)): ?>
         <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
@@ -46,13 +47,15 @@ $messages = viewMessages($errorText, $conn);
                 There is no message yet. Be the first to write one!
             </div>
         <?php else: ?>
+            <?php $id = 0; ?>
             <?php foreach($messages as $message): ?>
                 <div class="message" id="message-<?php echo $message['message_id']; ?>'">
                     <h3><?php echo $message['title']; ?></h3>
                     <p class="data data-styling">
                         <i class="fa-solid fa-user"></i> Wrote by <?php echo $message['author']; ?> <br>
                         <i class="fa-solid fa-clock"></i> <?php echo $message['created_at']; ?>  <br>
-                        <i class="fa-solid fa-heart"></i> <?php echo $message['likes']; ?> Likes
+                        <i class="fa-solid fa-heart"></i>
+                        <span id="number_of_likes_<?php echo $id; ?>"><?php echo $message['likes']; ?></span> Likes
                     </p>
                     <p class="short-text"><?php echo $message['content']; ?></p>
                     <hr>
@@ -63,23 +66,24 @@ $messages = viewMessages($errorText, $conn);
 
                         <button is_liked="<?php echo $message['is_liked']; ?>" message_id="<?php echo $message['message_id']; ?>"
                                 type="button" class="btn-like btn btn-danger btn-action-message"
-                                <?php echo (empty($_SESSION['username']) ? 'disabled' : ''); ?>>
+                                <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>>
                         </button>
 
-                        <?php if(!empty($_SESSION) && $message['author'] == $_SESSION['username']): ?>
+                        <?php if(isUserLoggedIn() && $message['author'] == $_SESSION['username']): ?>
                             <a href="#" class="btn btn-secondary btn-action-message">
                                 <i class="fa-solid fa-trash-can"></i> Delete
                             </a>
                         <?php endif; ?>
                     </div>
                 </div>
+                <?php $id++; ?>
             <?php endforeach; ?>
         <?php endif; ?>
     <?php endif; ?>
 </div>
 
 <script>
-    const csrf_token = "<?php echo (empty($_SESSION))? '' : $_SESSION['csrf_token']; ?>";
+    const csrf_token = "<?php echo (!isUserLoggedIn())? '' : $_SESSION['csrf_token']; ?>";
 </script>
 <script src="../assets/js/messages.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
