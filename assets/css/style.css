@@ -290,6 +290,103 @@ body {
     border-right: solid 1px #F7F1F1;
 }
 
+.latest-images {
+    margin-top: 1em;
+    background-color: #FAD852;
+    padding: 2em;
+}
+
+.carousel-img {
+    object-fit: fill;
+    height: 40em;
+    border: #F7F1F1 solid 2px;
+}
+
+.hot-messages {
+    margin-top: 1em;
+    background-color: #FF375F;
+    padding: 2em;
+    overflow-y: scroll;
+    height: 50em;
+}
+
+.hot-message {
+    background-color: #ff97b0;
+    padding: 1em;
+    border-radius: .5em;
+    border: #F7F1F1 solid 2px;
+}
+
+.hot-message h6 a {
+    color: #F5F5F5;
+    font-weight: 800;
+    font-size: 1em;
+    text-decoration: none;
+}
+
+.hot-message h6 a:hover {
+    color: #F23A29;
+}
+
+.hot-message p {
+    font-family: "Source Code Pro", monospace !important;
+    font-size: .7em;
+}
+
+.latest-comments {
+    margin-top: 1em;
+    background-color: #8215D8;
+    padding: 2em;
+    overflow-y: scroll;
+    height: 50em;
+}
+
+.latest-comment {
+    background-color: #500c83;
+    padding: 1em;
+    border-radius: .5em;
+}
+
+.latest-comment .author, .latest-comment .message-title {
+    color: #e75df8;
+    text-decoration: none;
+}
+.latest-comment .author:hover, .latest-comment .message-title:hover {
+    color: #F5F5F5;
+}
+
+.comment-content {
+    font-family: "Source Code Pro", monospace !important;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.latest-users {
+    margin-top: 1em;
+    background-color: #3D8398;
+    padding: 2em;
+    overflow-y: scroll;
+    height: 50em;
+}
+
+.latest-user {
+    padding: 1em;
+    background-color: #77b0ca;
+    border-radius: .5em;
+    overflow-y: scroll;
+}
+
+.latest-user p {
+    font-family: "Source Code Pro", monospace !important;
+    font-size: .8em;
+}
+
+.thick-hr {
+    border: none;
+    height: 2px;
+    background-color: #2b2a2a;
+}
+
 .data-styling {
     font-size: .7em;
     font-family: "Source Code Pro", monospace;
@@ -299,11 +396,35 @@ body {
     .message-text {
         min-height: 5vh;
     }
+    .latest-images {
+        width: 100%;
+    }
+    .hot-messages {
+        width: 100%;
+    }
+    .latest-comments {
+        width: 100%;
+    }
+    .latest-users {
+        width: 100%;
+    }
 }
 
 @media only screen and (min-width: 600px) {
     .message-text {
         min-height: 15vh;
+    }
+    .latest-images {
+        width: 100%;
+    }
+    .hot-messages {
+        width: 100%;
+    }
+    .latest-comments {
+        width: 100%;
+    }
+    .latest-users {
+        width: 100%;
     }
 }
 
@@ -311,16 +432,52 @@ body {
     .message-text {
         min-height: 25vh;
     }
+    .latest-images {
+        width: 100%;
+    }
+    .hot-messages {
+        width: 100%;
+    }
+    .latest-comments {
+        width: 100%;
+    }
+    .latest-users {
+        width: 100%;
+    }
 }
 
 @media only screen and (min-width: 992px) {
     .message-text {
         min-height: 35vh;
     }
+    .latest-images {
+        width: 70%;
+    }
+    .hot-messages {
+        width: 25%;
+    }
+    .latest-comments {
+        width: 70%;
+    }
+    .latest-users {
+        width: 25%;
+    }
 }
 
 @media only screen and (min-width: 1200px) {
     .message-text {
         min-height: 50vh;
+    }
+    .latest-images {
+        width: 70%;
+    }
+    .hot-messages {
+        width: 25%;
+    }
+    .latest-comments {
+        width: 70%;
+    }
+    .latest-users {
+        width: 25%;
     }
 }

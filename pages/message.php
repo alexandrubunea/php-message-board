@@ -46,7 +46,7 @@ createComment($errorTextComment, $conn);
         <p class="data-styling">
             <i class="fa-solid fa-user"></i> Wrote by <?php echo $message_data['author']; ?> <br>
             <i class="fa-solid fa-clock"></i> <?php echo $message_data['created_at']; ?> <br>
-            <i class="fa-solid fa-heart"></i> <span id="number_of_likes"><?php echo $message_data['likes']; ?></span> Likes
+            <i class="fa-solid fa-heart"></i> <span id="number_of_likes"><?php echo $message_data['likes']; ?></span>
         </p>
         <hr>
         <div class="p-3 message-text">
@@ -120,7 +120,7 @@ createComment($errorTextComment, $conn);
                                     <p class="small text-end data-styling">
                                         <i class="fa-solid fa-clock"></i> <?php echo $comment['date']; ?> <br>
                                         <i class="fa-solid fa-heart"></i>
-                                        <span id="number_of_likes_<?php echo $id; ?>"><?php echo $comment['likes']; ?></span> Likes
+                                        <span id="number_of_likes_<?php echo $id; ?>"><?php echo $comment['likes']; ?></span>
                                     </p>
                                     <div class="d-flex flex-row w-100 gap-2">
                                         <button is_liked="<?php echo $comment['is_liked']; ?>" comment_id="<?php echo $comment['comment_id']; ?>"
