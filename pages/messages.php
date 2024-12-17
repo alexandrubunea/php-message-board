@@ -29,7 +29,7 @@ $messages = viewMessages($errorText, $conn);
 </head>
 <body>
 <?php include '../templates/header.php'; ?>
-<div class="container pt-5">
+<div class="container pt-5" style="min-height: 100vh;">
     <a href="create-message.php" class="btn btn-primary btn-create-message
         <?php echo (!isUserLoggedIn()) ? 'disabled' : ''; ?>"><i class="fa-solid fa-square-plus"></i> Create message</a>
     <hr>
@@ -84,6 +84,7 @@ $messages = viewMessages($errorText, $conn);
     <?php endif; ?>
 </div>
 
+<?php include '../templates/footer.php'; ?>
 <script>
     const csrf_token = "<?php echo (!isUserLoggedIn())? '' : $_SESSION['csrf_token']; ?>";
 </script>

@@ -32,7 +32,7 @@ createComment($errorTextComment, $conn);
 </head>
 <body>
 <?php include '../templates/header.php'; ?>
-<div class="container">
+<div class="container" style="min-height: 100vh;">
     <?php if(!empty($errorText)): ?>
     <div class="alert alert-danger d-flex align-items-center mt-5" role="alert">
         <i class="fa-solid fa-triangle-exclamation"></i>
@@ -145,6 +145,7 @@ createComment($errorTextComment, $conn);
     <?php endif; ?>
 </div>
 
+<?php include '../templates/footer.php'; ?>
 <script>
     const csrf_token = "<?php echo (!isUserLoggedIn())? '' : $_SESSION['csrf_token']; ?>";
 </script>

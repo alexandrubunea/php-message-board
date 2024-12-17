@@ -30,7 +30,7 @@ $latest_users = getLatestUsers($conn);
 <body>
     <?php include 'templates/header.php'; ?>
 
-    <div class="container mb-5">
+    <div class="container mb-5"  style="min-height: 100vh;">
         <div class="d-lg-flex lg-row gap-2">
             <div class="latest-images rounded mx-auto">
                 <h4><i class="fa-solid fa-image"></i> Latest Images</h4>
@@ -128,6 +128,8 @@ $latest_users = getLatestUsers($conn);
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<?php include 'templates/footer.php'; ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

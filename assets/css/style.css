@@ -392,6 +392,32 @@ body {
     font-family: "Source Code Pro", monospace;
 }
 
+footer {
+    margin-top: 2em;
+    padding: 3em;
+    background-color: #FB5E5E;
+}
+
+footer p {
+    font-family: "Source Code Pro", monospace !important;
+    font-size: 1em;
+}
+
+footer p a {
+    color: #F5F5F5;
+    text-decoration: none;
+    padding: .2em;
+    transition: all;
+    transition-duration: 500ms;
+    border-radius: .2em;
+}
+
+footer p a:hover {
+    color: #FB5E5E;
+    background-color: #F5F5F5;
+    padding: .2em;
+}
+
 @media only screen and (max-width: 600px) {
     .message-text {
         min-height: 5vh;
